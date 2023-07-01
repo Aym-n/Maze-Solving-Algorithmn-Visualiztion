@@ -68,6 +68,11 @@ def distance(p1, p2):
     x2, y2 = p2
     return abs(x1-x2) + abs(y1-y2)
 
+def reconstructPath(prevTile, end, draw):
+    while end in prevTile:
+        end = prevTile[end]
+        end.updateState(Path)
+        draw()
 
 def algorithm(draw, grid, start, end):
 
@@ -94,6 +99,9 @@ def algorithm(draw, grid, start, end):
         openSetHash.remove(cureentTile)
 
         if cureentTile == end:
+            reconstructPath(prevTile, end, draw)
+            end.updateState(End)
+            start.updateState(Start)
             return True
         
         for neighbor in cureentTile.neighbors:
@@ -210,6 +218,11 @@ def main(window, width):
                             tile.updateNeighbors(grid)
                     
                     algorithm(lambda: draw(window, grid, ROWS, width), grid, start, end)
+
+                if event.key == pygame.K_c:
+                    start = None
+                    end = None
+                    grid = makeGrid(ROWS, width)
 
     pygame.quit()
 main(window, width)
