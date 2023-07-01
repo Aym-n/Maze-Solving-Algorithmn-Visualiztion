@@ -3,4 +3,4 @@ The Maze Solver Algorithm Visualizer is a Python-based program that provides a g
 
 The project uses Python and Pygame to create an interactive grid interface where users can create custom mazes and observe the algorithm's real-time visualization. It aims to provide an educational and interactive way to learn about maze-solving algorithms.
 
-Technologies used: Python, Pygame.
+#### Technologies used: ```Python, Pygame.```
