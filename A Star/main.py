@@ -6,17 +6,17 @@ width = 800
 window = pygame.display.set_mode((width, width))
 pygame.display.set_caption("A* Path Finding Algorithm")
 
-# Colors   
-Closed = (255, 0, 0)
-Open = (0, 255, 0)
-BLUE = (0, 255, 0)
-YELLOW = (255, 255, 0)
-white = (255, 255, 255)
-Barrier = (0, 0, 0)
-Path = (128, 0, 128)
+# Colors 
+Default = (27, 26, 23) 
+Grid = (50, 50, 50)
 Start = (255, 165 ,0)
-GREY = (128, 128, 128)
 End = (64, 224, 208)
+
+Closed = (34, 40, 49)
+Open = (57, 62, 70)
+Barrier = (230, 213, 184)
+Path = (97, 115, 244)
+
 
 class Tile:
     def __init__(self, row, col, width, total_rows):
@@ -26,7 +26,7 @@ class Tile:
         self.total_rows = total_rows
         self.x = row * width
         self.y = col * width
-        self.color = white
+        self.color = Default
         self.neighbors = []
     
     def getPos(self):
@@ -42,7 +42,7 @@ class Tile:
         self.color = state
 
     def reset(self):
-        self.color = white
+        self.color = Default
     
     def draw(self , window):
         pygame.draw.rect(window, self.color, (self.x, self.y, self.width, self.width))
@@ -144,13 +144,13 @@ def makeGrid(rows, width):
 def drawGrid(window, rows, width):
     gap = width // rows
     for i in range(rows):
-        pygame.draw.line(window, GREY, (0, i*gap), (width, i*gap))
+        pygame.draw.line(window, Grid, (0, i*gap), (width, i*gap))
         for j in range(rows):
-            pygame.draw.line(window, GREY, (j*gap, 0), (j*gap, width))
+            pygame.draw.line(window, Grid, (j*gap, 0), (j*gap, width))
 
 
 def draw(window, grid, rows, width):
-    window.fill(white)
+    window.fill(Default)
     for row in grid:
         for tile in row:
             tile.draw(window)
