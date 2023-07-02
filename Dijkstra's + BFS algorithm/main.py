@@ -1,6 +1,7 @@
 import pygame
 import math
 from queue import PriorityQueue
+import time
 
 width = 800
 window = pygame.display.set_mode((width, width))
@@ -76,6 +77,8 @@ def reconstructPath(prevTile, end, draw):
 
 def algorithm(draw, grid, start, end):
 
+    cells = 0
+
     count = 0
     openSet = PriorityQueue()
     openSet.put((0, count, start))
@@ -99,6 +102,12 @@ def algorithm(draw, grid, start, end):
             reconstructPath(prevTile, end, draw)
             end.updateState(End)
             start.updateState(Start)
+
+            print("\n----------------------Path Found!----------------------")
+            print("Cells Checked: ", cells)
+            print("Path Length: ", gScore[end]+1)
+            
+
             return True
         
         for neighbor in cureentTile.neighbors:
@@ -123,7 +132,9 @@ def algorithm(draw, grid, start, end):
         
         if cureentTile != start:
             cureentTile.updateState(Closed)
-    
+            
+    print("\n--------------------Path Not Found!--------------------")
+    print("Cells Checked: ", cells)
     return False
 
 
@@ -161,7 +172,7 @@ def getClickedPos(pos, rows, width):
     return row , col
 
 def main(window, width):
-    ROWS = 50
+    ROWS = 25
     grid = makeGrid(ROWS, width)
 
     start = None
@@ -212,8 +223,14 @@ def main(window, width):
                     for row in grid:
                         for tile in row:
                             tile.updateNeighbors(grid)
-                    
+                    startTime = time.time()
+
                     algorithm(lambda: draw(window, grid, ROWS, width), grid, start, end)
+
+                    endTime = time.time()
+                    print("Time Taken : ",endTime - startTime)
+                    print("-------------------------------------------------------")
+
 
                 if event.key == pygame.K_c:
                     start = None

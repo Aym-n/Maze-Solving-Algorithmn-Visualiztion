@@ -2,11 +2,13 @@ import pygame
 import math
 from queue import PriorityQueue
 
+import time
+
 width = 800
 window = pygame.display.set_mode((width, width))
 pygame.display.set_caption("A* Path Finding Algorithm")
 
-# Colors 
+# Colors
 Default = (27, 26, 23) 
 Grid = (50, 50, 50)
 Start = (255, 165 ,0)
@@ -76,6 +78,8 @@ def reconstructPath(prevTile, end, draw):
 
 def algorithm(draw, grid, start, end):
 
+    cells = 0
+
     count = 0
     openSet = PriorityQueue()
     openSet.put((0, count, start))
@@ -102,6 +106,9 @@ def algorithm(draw, grid, start, end):
             reconstructPath(prevTile, end, draw)
             end.updateState(End)
             start.updateState(Start)
+            print("\n----------------------Path Found!----------------------")
+            print("Cells Checked: ", cells)
+            print("Path Length: ", gScore[end]+1)
             return True
         
         for neighbor in cureentTile.neighbors:
@@ -127,7 +134,10 @@ def algorithm(draw, grid, start, end):
         
         if cureentTile != start:
             cureentTile.updateState(Closed)
-    
+            cells += 1
+
+    print("\n--------------------Path Not Found!--------------------")
+    print("Cells Checked: ", cells)
     return False
 
 
@@ -165,7 +175,8 @@ def getClickedPos(pos, rows, width):
     return row , col
 
 def main(window, width):
-    ROWS = 50
+
+    ROWS = 25
     grid = makeGrid(ROWS, width)
 
     start = None
@@ -216,14 +227,20 @@ def main(window, width):
                     for row in grid:
                         for tile in row:
                             tile.updateNeighbors(grid)
-                    
+                    startTime = time.time()
+
                     algorithm(lambda: draw(window, grid, ROWS, width), grid, start, end)
+
+                    endTime = time.time()
+                    print("Time Taken : ",endTime - startTime)
+                    print("-------------------------------------------------------\n")
+
 
                 if event.key == pygame.K_c:
                     start = None
                     end = None
                     grid = makeGrid(ROWS, width)
-
+    
     pygame.quit()
 main(window, width)
     
